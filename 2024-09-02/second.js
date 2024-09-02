@@ -38,3 +38,10 @@ console.log(addNumbersNested(3)(4));
 // Kirjutada umber arrow func
 const addNumbersNestedArrowFn = (num1) => (num2) => num1 + num2
 console.log(addNumbersNestedArrowFn(3)(5));
+
+// 7. ulesanne AF printida "Hello (nimi)" ja kasutada string literals
+
+const greet = (name = "World") => `Hello ${name}`;
+
+console.log(greet());
+console.log(greet("Jorgen"));
