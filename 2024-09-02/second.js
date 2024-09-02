@@ -45,3 +45,20 @@ const greet = (name = "World") => `Hello ${name}`;
 
 console.log(greet());
 console.log(greet("Jorgen"));
+
+// Map ja filter
+// Ulesanne liita igale elemendile juurde +5
+
+const newArray = [1, 2, 3, 4, 5]
+const addedArray = newArray.map(element => element + 5);
+
+console.log(addedArray)
+
+// kaime labi ka erinevad 3 parameetrit
+
+const threeParameters = newArray.map((element, index, array) => {
+    console.log(element, index, array)
+    const added = 1+2
+
+    return element + 5
+});
