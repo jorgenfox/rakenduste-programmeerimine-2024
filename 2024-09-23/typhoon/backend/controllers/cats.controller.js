@@ -38,9 +38,42 @@ exports.create = (req, res) => {
 };
 
 exports.read = (req, res) => {
-  res.send(cats);
+  const activeCats = cats.filter((cat) => !cat.deleted);
+  res.send(activeCats);
 };
 
-exports.update = (req, res) => {};
+exports.update = (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
 
-exports.delete = (req, res) => {};
+  const catIndex = cats.findIndex((cat) => cat.id === id);
+
+  if (catIndex === -1) {
+    return res.status(404).send({ type: "Error", message: "Cat not found" });
+  }
+
+  if (!name || name === "") {
+    return res
+      .status(418)
+      .send({ type: "Error", message: "Must include a name" });
+  }
+
+  cats[catIndex].name = name;
+  cats[catIndex].updatedAt = Date.now();
+
+  res.send(cats[catIndex]);
+};
+
+exports.delete = (req, res) => {
+  const { id } = req.params;
+
+  const catIndex = cats.findIndex((cat) => cat.id === id);
+
+  if (catIndex === -1) {
+    return res.status(404).send({ type: "Error", message: "Cat not found" });
+  }
+
+  cats[catIndex].deleted = true;
+
+  res.send({ message: "Cat deleted successfully" });
+};

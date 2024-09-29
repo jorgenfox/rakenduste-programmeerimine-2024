@@ -1,37 +1,38 @@
 import { Box, Button, Stack, TextField, Snackbar, Alert } from "@mui/material";
 import React, { useState } from "react";
 
-type SubmitCatProps = {
-  fetchCats: () => void;
+type SubmitTodoProps = {
+  fetchTodos: () => void;
 };
 
-const SubmitCat = ({ fetchCats }: SubmitCatProps) => {
-  const [name, setName] = useState("");
+const SubmitTodo = ({ fetchTodos }: SubmitTodoProps) => {
+  const [title, setTitle] = useState("");
+  const [priority, setPriority] = useState(1);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
     "success"
   );
 
-  const submitCat = async () => {
+  const submitTodo = async () => {
     try {
-      const response = await fetch("http://localhost:8080/cats", {
+      const response = await fetch("http://localhost:8080/todos", {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name: name }),
+        body: JSON.stringify({ title, priority }),
       });
 
       if (response.ok) {
         console.log("Success", response);
-        setSnackbarMessage("Cat added successfully!");
+        setSnackbarMessage("Todo added successfully!");
         setSnackbarSeverity("success");
         setSnackbarOpen(true);
       } else {
         console.warn("No success");
-        setSnackbarMessage("Failed to add cat.");
+        setSnackbarMessage("Failed to add todo.");
         setSnackbarSeverity("error");
         setSnackbarOpen(true);
       }
@@ -45,8 +46,8 @@ const SubmitCat = ({ fetchCats }: SubmitCatProps) => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    submitCat();
-    setTimeout(fetchCats, 100);
+    submitTodo();
+    setTimeout(fetchTodos, 100);
   };
 
   const handleSnackbarClose = () => {
@@ -60,8 +61,13 @@ const SubmitCat = ({ fetchCats }: SubmitCatProps) => {
       <form onSubmit={handleSubmit}>
         <Stack spacing={2}>
           <TextField
-            label="Cat name"
-            onChange={(event) => setName(event.target.value)}
+            label="Todo title"
+            onChange={(event) => setTitle(event.target.value)}
+          />
+          <TextField
+            label="Priority"
+            type="number"
+            onChange={(event) => setPriority(Number(event.target.value))}
           />
           <Button type="submit">Add</Button>
         </Stack>
@@ -84,4 +90,4 @@ const SubmitCat = ({ fetchCats }: SubmitCatProps) => {
   );
 };
 
-export default SubmitCat;
+export default SubmitTodo;
