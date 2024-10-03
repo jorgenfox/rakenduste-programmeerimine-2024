@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   Box,
   List,
@@ -6,8 +7,9 @@ import {
   Typography,
   Card,
   CardContent,
+  useTheme,
+  Stack,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
 import SubmitTodo from "./SubmitTodo";
 import UpdateTodo from "./UpdateTodo";
 import DeleteTodo from "./DeleteTodo";
@@ -21,9 +23,10 @@ type Todo = {
   deleted: boolean;
 };
 
-const Todos = () => {
+const Todos: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  const theme = useTheme();
 
   const fetchTodos = async () => {
     const response = await fetch("http://localhost:8080/todos");
@@ -44,12 +47,34 @@ const Todos = () => {
   }, []);
 
   return (
-    <Box>
-      <Typography variant="h3">TODOs</Typography>
-      <List>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+        padding: theme.spacing(4),
+      }}
+    >
+      <Typography variant="h3" color={theme.palette.primary.main}>
+        TODOs
+      </Typography>
+      <SubmitTodo fetchTodos={fetchTodos} />
+      {selectedTodo && (
+        <UpdateTodo
+          todo={selectedTodo}
+          fetchTodos={fetchTodos}
+          onUpdateSuccess={handleUpdateSuccess}
+        />
+      )}
+      <List sx={{ width: "100%", maxWidth: 400 }}>
+        {" "}
         {todos.map((todo) => (
-          <ListItem key={todo.id}>
-            <Card sx={{ width: "300px", marginBottom: 2 }}>
+          <ListItem key={todo.id} sx={{ width: "100%" }}>
+            {" "}
+            <Card sx={{ width: "100%", marginBottom: theme.spacing(2) }}>
+              {" "}
               <CardContent>
                 <Typography variant="h5">{todo.title}</Typography>
                 <Typography color="text.secondary">
@@ -67,21 +92,21 @@ const Todos = () => {
                 <Typography color="text.secondary">
                   Deleted: {todo.deleted ? "Yes" : "No"}
                 </Typography>
-                <Button onClick={() => handleSelectTodo(todo)}>Update</Button>
-                <DeleteTodo todoId={todo.id} fetchTodos={fetchTodos} />
+                <Stack direction="row" spacing={2} sx={{ marginTop: 2 }}>
+                  <Button
+                    variant="contained"
+                    onClick={() => handleSelectTodo(todo)}
+                    sx={{ marginTop: theme.spacing(1) }}
+                  >
+                    Update
+                  </Button>
+                  <DeleteTodo todoId={todo.id} fetchTodos={fetchTodos} />
+                </Stack>
               </CardContent>
             </Card>
           </ListItem>
         ))}
       </List>
-      <SubmitTodo fetchTodos={fetchTodos} />
-      {selectedTodo && (
-        <UpdateTodo
-          todo={selectedTodo}
-          fetchTodos={fetchTodos}
-          onUpdateSuccess={handleUpdateSuccess}
-        />
-      )}
     </Box>
   );
 };

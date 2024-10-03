@@ -1,12 +1,14 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { Button, useTheme } from "@mui/material";
 
 type DeleteTodoProps = {
   todoId: number;
   fetchTodos: () => void;
 };
 
-const DeleteTodo = ({ todoId, fetchTodos }: DeleteTodoProps) => {
+const DeleteTodo: React.FC<DeleteTodoProps> = ({ todoId, fetchTodos }) => {
+  const theme = useTheme();
+
   const deleteTodo = async () => {
     try {
       const response = await fetch(`http://localhost:8080/todos/${todoId}`, {
@@ -24,7 +26,16 @@ const DeleteTodo = ({ todoId, fetchTodos }: DeleteTodoProps) => {
     }
   };
 
-  return <Button onClick={deleteTodo}>Delete</Button>;
+  return (
+    <Button
+      variant="contained"
+      color="error"
+      onClick={deleteTodo}
+      sx={{ marginLeft: theme.spacing(2) }}
+    >
+      Delete
+    </Button>
+  );
 };
 
 export default DeleteTodo;

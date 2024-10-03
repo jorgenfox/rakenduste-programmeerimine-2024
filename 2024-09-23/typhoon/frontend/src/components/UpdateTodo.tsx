@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button, TextField, Stack } from "@mui/material";
+import { Box, Button, TextField, Stack, useTheme } from "@mui/material";
 
 type UpdateTodoProps = {
   todo: { id: number; title: string; priority: number };
@@ -7,9 +7,14 @@ type UpdateTodoProps = {
   onUpdateSuccess: () => void;
 };
 
-const UpdateTodo = ({ todo, fetchTodos, onUpdateSuccess }: UpdateTodoProps) => {
+const UpdateTodo: React.FC<UpdateTodoProps> = ({
+  todo,
+  fetchTodos,
+  onUpdateSuccess,
+}) => {
   const [title, setTitle] = useState(todo.title);
   const [priority, setPriority] = useState(todo.priority);
+  const theme = useTheme();
 
   const updateTodo = async () => {
     try {
@@ -40,7 +45,12 @@ const UpdateTodo = ({ todo, fetchTodos, onUpdateSuccess }: UpdateTodoProps) => {
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        padding: theme.spacing(2),
+        backgroundColor: theme.palette.background.default,
+      }}
+    >
       <form onSubmit={handleSubmit}>
         <Stack spacing={2}>
           <TextField
@@ -56,7 +66,9 @@ const UpdateTodo = ({ todo, fetchTodos, onUpdateSuccess }: UpdateTodoProps) => {
             onChange={(event) => setPriority(Number(event.target.value))}
             required
           />
-          <Button type="submit">Update</Button>
+          <Button type="submit" variant="contained" color="primary">
+            Update
+          </Button>
         </Stack>
       </form>
     </Box>

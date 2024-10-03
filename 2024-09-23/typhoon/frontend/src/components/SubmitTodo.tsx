@@ -1,11 +1,19 @@
-import { Box, Button, Stack, TextField, Snackbar, Alert } from "@mui/material";
 import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Snackbar,
+  Alert,
+  useTheme,
+} from "@mui/material";
 
 type SubmitTodoProps = {
   fetchTodos: () => void;
 };
 
-const SubmitTodo = ({ fetchTodos }: SubmitTodoProps) => {
+const SubmitTodo: React.FC<SubmitTodoProps> = ({ fetchTodos }) => {
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState(1);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -13,6 +21,7 @@ const SubmitTodo = ({ fetchTodos }: SubmitTodoProps) => {
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
     "success"
   );
+  const theme = useTheme();
 
   const submitTodo = async () => {
     try {
@@ -56,7 +65,12 @@ const SubmitTodo = ({ fetchTodos }: SubmitTodoProps) => {
 
   return (
     <Box
-      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: theme.spacing(2),
+      }}
     >
       <form onSubmit={handleSubmit}>
         <Stack spacing={2}>
@@ -69,7 +83,9 @@ const SubmitTodo = ({ fetchTodos }: SubmitTodoProps) => {
             type="number"
             onChange={(event) => setPriority(Number(event.target.value))}
           />
-          <Button type="submit">Add</Button>
+          <Button type="submit" variant="contained" color="primary">
+            Add
+          </Button>
         </Stack>
       </form>
       <Snackbar
