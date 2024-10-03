@@ -13,7 +13,7 @@ type SubmitTodoProps = {
   fetchTodos: () => void;
 };
 
-const SubmitTodo: React.FC<SubmitTodoProps> = ({ fetchTodos }) => {
+const SubmitTodo = ({ fetchTodos }: SubmitTodoProps) => {
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState(1);
   const [snackbarOpen, setSnackbarOpen] = useState(false);

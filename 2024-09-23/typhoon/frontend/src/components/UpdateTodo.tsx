@@ -7,11 +7,7 @@ type UpdateTodoProps = {
   onUpdateSuccess: () => void;
 };
 
-const UpdateTodo: React.FC<UpdateTodoProps> = ({
-  todo,
-  fetchTodos,
-  onUpdateSuccess,
-}) => {
+const UpdateTodo = ({ todo, fetchTodos, onUpdateSuccess }: UpdateTodoProps) => {
   const [title, setTitle] = useState(todo.title);
   const [priority, setPriority] = useState(todo.priority);
   const theme = useTheme();

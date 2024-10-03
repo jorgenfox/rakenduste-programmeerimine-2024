@@ -6,7 +6,7 @@ type DeleteTodoProps = {
   fetchTodos: () => void;
 };
 
-const DeleteTodo: React.FC<DeleteTodoProps> = ({ todoId, fetchTodos }) => {
+const DeleteTodo = ({ todoId, fetchTodos }: DeleteTodoProps) => {
   const theme = useTheme();
 
   const deleteTodo = async () => {

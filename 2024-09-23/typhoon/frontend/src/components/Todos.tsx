@@ -23,7 +23,7 @@ type Todo = {
   deleted: boolean;
 };
 
-const Todos: React.FC = () => {
+const Todos = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const theme = useTheme();

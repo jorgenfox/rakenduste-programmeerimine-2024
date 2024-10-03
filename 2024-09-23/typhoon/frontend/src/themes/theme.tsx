@@ -1,5 +1,5 @@
 import { createTheme } from "@mui/material/styles";
-import { deepPurple, green } from "@mui/material/colors";
+import { deepPurple, blue } from "@mui/material/colors";
 
 // Create a custom theme
 const theme = createTheme({
@@ -8,7 +8,7 @@ const theme = createTheme({
       main: deepPurple[500],
     },
     secondary: {
-      main: green[500],
+      main: blue[500],
     },
   },
   typography: {
