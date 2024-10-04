@@ -3,6 +3,11 @@ const cors = require("cors");
 const app = express();
 const morgan = require("morgan");
 const jwt = require("jsonwebtoken");
+const {
+  generateTokenValidation,
+  verifyTokenValidation,
+} = require("./middlewares/validator");
+const { validationResult } = require("express-validator");
 const port = 8080;
 
 app.use(cors());
@@ -20,18 +25,24 @@ app.use("/examples", exampleRoutes);
 app.use("/todos", todosRoutes);
 
 // TOKEN
-app.get("/token", (req, res) => {
-  const name = req.body.name || "Your name";
+app.get("/token", generateTokenValidation, (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const name = req.body.name;
   const token = jwt.sign({ name }, SECRET_KEY, { expiresIn: "1h" });
   res.json({ token });
 });
 
-app.post("/verify-token", (req, res) => {
-  const token = req.body.token;
-
-  if (!token) {
-    return res.status(400).json({ message: "Token is required" });
+app.post("/verify-token", verifyTokenValidation, (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
   }
+
+  const token = req.body.token;
 
   jwt.verify(token, SECRET_KEY, (err, decoded) => {
     if (err) {
